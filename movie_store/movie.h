@@ -16,7 +16,7 @@ struct movie {
     double rating = 0, price, fee; //renting price and fee are per day
     int RentedCount = 0;
     bool rented = false, due = false;
-    std::vector<int> AllRatings;
+    std::vector<std::string> AllRatings;
     date::year_month_day DueDate;
 };
 

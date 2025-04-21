@@ -122,53 +122,104 @@ int ListUnrented(const movie movies[], const int& movies_count) {
 }
 
 
+int edit_rating(movie(&movies)[movies_max], int movies_count, int movieNum, std::string& movieName,
+    Customer customers[], int customers_count, std::string& id) { // work on parameters
+    for (int i =0; i < movies[movieNum].AllRatings.size(); i++) //note: range based won't work here
+    {
+        std::string rater_id, rating_str, new_rating;
+        int rating_int, new_rat;
+        char delimiter;
+        std::istringstream iss(movies[movieNum].AllRatings[i]);
+        if (iss >> rater_id >> delimiter >> rating_str && delimiter == '/') {
+            if (rater_id == id) {  //if customer rated before delete old rating
+                auto index = movies[movieNum].AllRatings.begin() + i;
+                movies[movieNum].AllRatings.erase(index); //deletes and pushes back the rest
+                std::cout << "Rating: " << movieName << "\n\n";
+                std::cout << "1: *\n" <<
+                    "2: **\n" <<
+                    "3: ***\n" <<
+                    "4: ****\n" <<
+                    "5: *****\n\n";
+                std::cout << "enter new rating:\n";
+                std::cin >> new_rat;
+                new_rating += "/" + std::to_string(new_rat);
+                movies[movieNum].AllRatings.push_back(new_rating);
+                return new_rat;
+            }
+        }
+            //rating_int = std::stoi(rating_str);
+    }
+    return 0; // hasn't rated before
+}
+
 bool rate(movie (&movies)[movies_max], int movies_count, int movieNum, std::string& movieName,
           Customer customers[], int customers_count,std::string& id)
 {
+        int rating = 0;
+        int movieNum = getMovieNum(movies, movies_count, movieName);
+        int movieNum = getMovieNum(movies, movies_count, movieName);
+            int a = 0, b = 0, c = 0, d = 0, e = 0;
+        std::string full_data = id;
     if (isMovieRentedByCustomer(customers, customers_count, id, movieName))
     {
-        int rating = 0, a = 0, b = 0, c = 0, d = 0, e = 0;
-        int movieNum = getMovieNum(movies, movies_count, movieName);
-        int movieNum = getMovieNum(movies, movies_count, movieName);
         std::cout << "Rating: " << movieName << "\n\n";
         std::cout << "1: *\n" <<
                      "2: **\n" <<
                      "3: ***\n" <<
                      "4: ****\n" <<
                      "5: *****\n\n";
-        
         std::cout << "Pick a rating from above: ";
         std::cin >> rating;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        switch (rating)
-        {
-        case 1:
-            movies[movieNum].AllRatings.push_back(1);
-            break;                    
-        case 2:
-            movies[movieNum].AllRatings.push_back(2);
-            break;                    
-        case 3:
-            movies[movieNum].AllRatings.push_back(3);
-            break;                    
-        case 4:
-            movies[movieNum].AllRatings.push_back(4);
-            break;                    
-        case 5:
-            movies[movieNum].AllRatings.push_back(5);
-            break;
-        
-        default:
+        if (rating > 5 || rating < 1 || std::cin.bad()) {
             std::cout << "Please pick a valid rating\n";
             std::this_thread::sleep_for(std::chrono::seconds(2));
             return false;
         }
+        full_data += "/" + std::to_string(rating);
+        movies[movieNum].AllRatings.push_back(full_data);
+        switch (rating)
+        {
+        case 1:
+            a++;
+            break;
+        case 2:
+            b++;
+            break;
+        case 3:
+            c++;
+            break;
+        case 4:
+            d++;
+            break;
+        case 5:
+            e++;
+            break;
+        default:
+            std::cerr << "error in the ratings vector or the calcrating function, operation has been canceled, please contact your IT provider" << std::endl;
+            break;
+        }
+        }
         if (!movies[movieNum].AllRatings.empty())
         {
-            for (int i : movies[movieNum].AllRatings)
+            for (std::string i : movies[movieNum].AllRatings)
             {
-                switch (i)
+                std::string rater_id, rating_str;
+                int rating_int;
+                char delimiter;
+                std::istringstream iss(i);
+                if (iss >> rater_id >> delimiter >> rating_str && delimiter == '/') {
+                    if (rater_id == id) { //if customer rated before they can't rate again
+                        edit_rating(/**/)
+                        return true; }  // fix this shit bcz this will always happen, -fix return if needed
+                    
+                    rating_int = std::stoi(rating_str);
+                }
+                else {
+                    return true;
+                }
+                switch (rating_int)
                 {
                 case 1:
                     a++;
@@ -186,7 +237,7 @@ bool rate(movie (&movies)[movies_max], int movies_count, int movieNum, std::stri
                     e++;
                     break;
                 default:
-                    std::cerr << "error in the ratings vector or the calcrating function, please contact your IT provider" << std::endl;
+                    std::cerr << "error in the ratings vector or the calcrating function, operation has been canceled, please contact your IT provider" << std::endl;
                     break;
                 }
             }
@@ -195,18 +246,22 @@ bool rate(movie (&movies)[movies_max], int movies_count, int movieNum, std::stri
         else
         {
             movies[movieNum].rating = rating;
-            return true; //for main menu
+            return false; //for main menu
         }
-    } 
-    else 
+}
+else if (/**/) { //will happen if the customer has rated the movie before
+    int new_rat;
+    new_rat = edit_rating(/**/);
+    return false; //for main menu
+    }
+else 
     {
-        std::cout << "This movie isn't rented by the customer!\n";
+        std::cout << "This movie hasn't rented by the customer!\n";
         return true; // for main menu
     }
     std::cout << "Thanks for your rating!\n";
     return true; // for main menu
-}
-
+} // curly braces are stoooopid and i will six it later
 
 
 void rent(Customer customers[],int num_of_customers, movie movies[], int num_of_movies)
