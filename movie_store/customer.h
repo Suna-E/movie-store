@@ -14,13 +14,13 @@ struct Customer
 
 
 //-------------------------utilities-----------------------------
-std::string generateId(); // done
-std::string deleteSpaces(std::string& str); // done
-bool checkPhoneNumber(std::string& PhoneNumber); // done
-bool checkPhoneNumberRegistered(Customer customers[], int customers_count, std::string& PhoneNumber); // done
-bool checkId(Customer customers[], int customers_count, std::string& id); // done
-int getCustomersCount(Customer customers[], int size_of_customers); // done
-bool isEmpty(Customer customers[], int customerIndex); // done
+// std::string generateId(); // done
+// std::string deleteSpaces(std::string& str); // done
+// bool checkPhoneNumber(std::string& PhoneNumber); // done
+// bool checkPhoneNumberRegistered(Customer customers[], int customers_count, std::string& PhoneNumber); // done
+// bool checkId(Customer customers[], int customers_count, std::string& id); // done
+// int getCustomersCount(Customer customers[], int size_of_customers); // done
+// bool isEmpty(Customer customers[], int customerIndex); // done
 //-------------------------utilities-----------------------------
 
 void listCustomers(Customer customers[], int customers_count); // done

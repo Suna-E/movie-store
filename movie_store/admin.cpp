@@ -206,7 +206,7 @@ void addNewMovie(movie movies[], int size_of_movies, int& movies_count) // done
 
 // to do while debugging: fix this shitty double enter
 // in main menu add,   bool isDateChanged, and sys_days new_date 
-bool ChangeDate(sys_days& new_date) // done
+bool changeDate(sys_days& new_date) // done
 {
     int y, m, d;
     char delimiter1, delimiter2;
